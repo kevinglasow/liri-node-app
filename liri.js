@@ -1,4 +1,7 @@
+require("dotenv").config();
 var request = require("request");
+var keys = require("./keys.js")
+
 
 var input = process.argv.slice(2);
 
