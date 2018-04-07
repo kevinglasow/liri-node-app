@@ -1,3 +1,7 @@
+// Psudocode for remaining steps
+// Wrap the if/else statements that take the user inputs in a function
+// Pass the variables obtained by doWhatItSays() into that function
+
 var request = require("request");
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
@@ -7,32 +11,9 @@ var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 var fs = require("fs");
 
-var input = process.argv.slice(2);
-var command = input[0];
-var userEntry = input[1];
-
-console.log(command);
-console.log(userEntry);
-
-if (command === "my-tweets") {
-    myTweets()
-} else if (command === "spotify-this-song") {
-    if (input.length === 1) {
-        spotifyThisSong("The Sign")
-    } else {
-        spotifyThisSong(command)
-    }
-} else if (command === "movie-this") {
-    if (input.length === 1) {
-        movieThis("Mr. Nobody")
-    } else {
-        movieThis(userEntry)
-    }
-} else if (command === "do-what-it-says") {
-    doWhatItSays()
-} else {
-    Console.log("Please enter a command")
-}
+var input = process.argv.slice(2)
+var command = process.argv[2];
+var userEntry = process.argv[3]
 
 function myTweets() {
     var params = {
@@ -55,19 +36,19 @@ function spotifyThisSong(track) {
     spotify.search({
         type: 'track',
         query: track,
-        limit: 1
+        limit: 20
     }, function (error, data) {
         if (error) {
             return console.log("Error occurred: " + error);
         }
-        // data.forEach(function (songs) {
-        // console.log(JSON.stringify(data.tracks.items[0], null, 2));
-        console.log("Artist Name: " + JSON.stringify(data.tracks.items[0].artists[0].name, null, 2));
-        console.log("Song Title: " + JSON.stringify(data.tracks.items[0].name, null, 2));
-        console.log("Preview URL: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
-        console.log("Album Name: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
-        console.log("");
-        // })
+        data.tracks.items.forEach(function (song) {
+            // console.log(JSON.stringify(data.tracks.items[0], null, 2));
+            console.log("Artist Name: " + JSON.stringify(song.artists[0].name, null, 2));
+            console.log("Song Title: " + JSON.stringify(song.name, null, 2));
+            console.log("Preview URL: " + JSON.stringify(song.preview_url, null, 2));
+            console.log("Album Name: " + JSON.stringify(song.album.name, null, 2));
+            console.log("");
+        })
     });
 }
 
@@ -99,3 +80,27 @@ function doWhatItSays() {
         console.log(userEntry);
     });
 }
+
+function ifElse() {
+    if (command === "my-tweets") {
+        myTweets()
+    } else if (command === "spotify-this-song") {
+        if (input.length === 1) {
+            spotifyThisSong("The Sign Ace of Base")
+        } else {
+            spotifyThisSong(userEntry)
+        }
+    } else if (command === "movie-this") {
+        if (input.length === 1) {
+            movieThis("Mr. Nobody")
+        } else {
+            movieThis(userEntry)
+        }
+    } else if (command === "do-what-it-says") {
+        doWhatItSays()
+    } else {
+        console.log("Please enter a valid command")
+    }
+}
+
+ifElse()
