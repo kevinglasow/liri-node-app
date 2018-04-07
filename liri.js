@@ -1,7 +1,3 @@
-// Psudocode for remaining steps
-// Wrap the if/else statements that take the user inputs in a function
-// Pass the variables obtained by doWhatItSays() into that function
-
 var request = require("request");
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
@@ -11,7 +7,6 @@ var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 var fs = require("fs");
 
-var input = process.argv.slice(2)
 var command = process.argv[2];
 var userEntry = process.argv[3]
 
@@ -42,7 +37,6 @@ function spotifyThisSong(track) {
             return console.log("Error occurred: " + error);
         }
         data.tracks.items.forEach(function (song) {
-            // console.log(JSON.stringify(data.tracks.items[0], null, 2));
             console.log("Artist Name: " + JSON.stringify(song.artists[0].name, null, 2));
             console.log("Song Title: " + JSON.stringify(song.name, null, 2));
             console.log("Preview URL: " + JSON.stringify(song.preview_url, null, 2));
@@ -76,22 +70,25 @@ function doWhatItSays() {
         var dataArr = data.split(",");
         var command = dataArr[0];
         var userEntry = dataArr[1]
-        console.log(command);
-        console.log(userEntry);
+        if (command === "Do what it says") {
+            console.log("Please don't put me into an infinate loop. That'd be mean.")
+        } else {
+            ifElse(command, userEntry);
+        }
     });
 }
 
-function ifElse() {
+function ifElse(command, userEntry) {
     if (command === "my-tweets") {
         myTweets()
     } else if (command === "spotify-this-song") {
-        if (input.length === 1) {
+        if (userEntry == null) {
             spotifyThisSong("The Sign Ace of Base")
         } else {
             spotifyThisSong(userEntry)
         }
     } else if (command === "movie-this") {
-        if (input.length === 1) {
+        if (userEntry == null) {
             movieThis("Mr. Nobody")
         } else {
             movieThis(userEntry)
@@ -103,4 +100,4 @@ function ifElse() {
     }
 }
 
-ifElse()
+ifElse(command, userEntry);
