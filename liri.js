@@ -70,7 +70,7 @@ function doWhatItSays() {
         var dataArr = data.split(",");
         var command = dataArr[0];
         var userEntry = dataArr[1]
-        if (command === "Do what it says") {
+        if (command === "do-what-it-says") {
             console.log("Please don't put me into an infinate loop. That'd be mean.")
         } else {
             ifElse(command, userEntry);
